@@ -2,26 +2,23 @@
 # $< = first dependency
 # $^ = all dependencies
 
-# First rule is the one executed when no parameters are fed to the Makefile
-all: run
+OBJ = boot.o main.o io.asm.o io.o
+CC = gcc
+CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
+		 -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+INCLUDE = -I../include/
+LDFLAGS = -T link.ld -melf_i386
+AS = nasm
+ASFLAGS = -f elf
 
-kernel.bin: kernel_entry.o kernel.o
-	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
+all: kernel.elf
 
-kernel_entry.o: kernel_entry.s
-	nasm $< -f elf -o $@
+kernel.elf: $(OBJ)
+	ld $(LDFLAGS) $(OBJ) -o kernel.elf
 
-kernel.o: kernel.c
-	gcc -fno-pie -m32 -ffreestanding -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
 
-mbr.bin: mbr.s
-	nasm $< -f bin -o $@
+%.o: %.s
+	$(AS) $(ASFLAGS) $(INCLUDE) $< -o $@
 
-os-image.bin: mbr.bin kernel.bin
-	cat $^ > $@
-
-run: os-image.bin
-	qemu-system-i386 -display gtk -fda $<
-
-clean:
-	$(RM) *.bin *.o *.dis
