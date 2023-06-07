@@ -2,10 +2,10 @@
 # $< = first dependency
 # $^ = all dependencies
 
-OBJ = boot.o main.o io.asm.o io.o
+OBJ = boot.o main.o io.o io.asm.o
 CC = gcc
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-		 -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+		 -nostartfiles -nodefaultlibs -Wall -Wextra -c
 INCLUDE = -I../include/
 LDFLAGS = -T link.ld -melf_i386
 AS = nasm

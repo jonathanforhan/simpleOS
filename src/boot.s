@@ -15,7 +15,7 @@ align   4                               ; code must be 4 byte aligned
         dd FLAGS
         dd CHECKSUM
 
-loader:                                 ; entry point definde in linker script
+loader:                                 ; entry point defined in linker script
         ; point esp to start of kstack, this initializes the kernel stack
         ; to 4096 bytes
         mov     esp, kernel_stack + K_STACK_SIZE

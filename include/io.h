@@ -10,6 +10,15 @@
 void
 outb(unsigned short port, unsigned char data);
 
+/** inb:
+ *  reads a bytes from an IO port
+ *
+ *  @param port - IO port address
+ *  @return     - the byte read
+ */
+unsigned char
+inb(unsigned short port);
+
 /** fb_write_cell:
  *  write a character to framebuffer with given foreground and background color at position i
  *
@@ -29,13 +38,13 @@ fb_write_cell(unsigned i, char c, unsigned char fg, unsigned char bg);
 void
 fb_move_cursor(unsigned short pos);
 
-/** print:
- *  prints to framebuffer, moves cursor with it
+/** fb_write:
+ *  writes to framebuffer, moves cursor with it
  *
- *  @param s   - string to print
- *  @param len - length of string to print
+ *  @param buf - buffer to write
+ *  @param len - length of buffer to write
  */
 void
-print(const char *s, unsigned len);
+fb_write(const char *buf, unsigned len);
 
 #endif // IO_H
