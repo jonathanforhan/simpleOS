@@ -17,9 +17,37 @@ scroll_buffer(void)
     }
 }
 
+void
+write_number(int n)
+{
+    char c;
+    int len = 0, cpy = n;
+
+    if (n == 0) {
+        fb_write_cell(0, '0', 7, 0);
+        fb_move_cursor(1);
+        return;
+    }
+
+    while (cpy > 0) {
+        len++;
+        cpy /= 10;
+    }
+
+    fb_move_cursor(len);
+
+    while (n > 0) {
+        c = '0' + (n % 10);
+        fb_write_cell((--len), c, 7, 0);
+        n /= 10;
+    }
+}
+
 int
 main(void)
 {
+    int i;
+
     scroll_buffer();
     scroll_buffer();
     scroll_buffer();
@@ -27,5 +55,9 @@ main(void)
     scroll_buffer();
     fb_write("Welcome to Jonny's Operating System", 36);
     scroll_buffer();
-    fb_write("Hello, World!", 13);
+
+    for (i = 0; i < 10; ++i) {
+        scroll_buffer();
+        write_number(i);
+    }
 }
