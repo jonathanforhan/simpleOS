@@ -1,3 +1,6 @@
+;
+; multiboot_header.S
+;
 MAGIC   equ 0xe85250d6
 ARCH    equ 0x0
 
