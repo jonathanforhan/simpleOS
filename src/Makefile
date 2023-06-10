@@ -2,14 +2,14 @@
 # $< = first dependency
 # $^ = all dependencies
 
-OBJ = boot.o main.o io.o io.asm.o gdt.o
+OBJ = ${shell find -name \*.[cS] | sed -e 's/\(.*\)\.[cS]/\1.o/g'}
 CC = gcc
-CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
+CFLAGS = -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		 -nostartfiles -nodefaultlibs -Wall -Wextra -c
 INCLUDE = -I../include/
-LDFLAGS = -T link.ld -melf_i386
+LDFLAGS = -n -o kernel.elf -T link.ld
 AS = nasm
-ASFLAGS = -f elf
+ASFLAGS = -felf64
 
 all: kernel.elf
 
@@ -19,6 +19,6 @@ kernel.elf: $(OBJ)
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
 
-%.o: %.s
-	$(AS) $(ASFLAGS) $(INCLUDE) $< -o $@
+%.o: %.S
+	$(AS) $(ASFLAGS) $< -o $@
 

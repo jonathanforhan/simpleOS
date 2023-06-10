@@ -1,26 +1,16 @@
-ENTRY(loader)                /* the name of the entry label */
+ENTRY(start)
 
 SECTIONS {
-    . = 0x00100000;          /* the code should be loaded at 1 MB */
+    . = 0x00100000;
 
-    .text ALIGN (0x1000) :   /* align at 4 KB */
+    .boot :
     {
-        *(.text)             /* all text sections from all files */
+        /* multiboot_header at beginning */
+        *(.multiboot_header)
     }
 
-    .rodata ALIGN (0x1000) : /* align at 4 KB */
+    .text :
     {
-        *(.rodata*)          /* all read-only data sections from all files */
-    }
-
-    .data ALIGN (0x1000) :   /* align at 4 KB */
-    {
-        *(.data)             /* all data sections from all files */
-    }
-
-    .bss ALIGN (0x1000) :    /* align at 4 KB */
-    {
-        *(COMMON)            /* all COMMON sections from all files */
-        *(.bss)              /* all bss sections from all files */
+        *(.text)
     }
 }

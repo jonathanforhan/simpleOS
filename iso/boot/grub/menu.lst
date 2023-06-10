@@ -1,5 +1,0 @@
-default=0
-timeout=1
-
-title simpleOS
-kernel /boot/kernel.elf
