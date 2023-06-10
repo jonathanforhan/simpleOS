@@ -1,20 +1,8 @@
 ;
 ; paging.S
 ;
-;
-; PAGING_INIT:
-;       paging is a memory managemnet stategy in which we map the full 64-bit
-;       address space to physical memory. This creates virtual memory used by
-;       the software and physical memory used by the hardware. Paging also prevents
-;       invalid read-write by software
-;       to do paging the MMU needs us to setup a paging table, it has 4 levels
-;               page-map level-4 table          (PML4)
-;               page-directory pointer table    (PDP)
-;               page-directory table            (PD)
-;               page-table                      (PT)
-;
-; used with PAGING_BSS in the section .bss
-%macro PAGING_INIT 0
+[bits 32]
+paging_init:
 ;       point first entry of PML4 to first entry of PDP
         mov     eax, p3_table
         or      eax, 0b11               ; add 'present' (bit 1) and 'writable' (bit 2)
@@ -56,10 +44,10 @@
         or      eax, 1 << 31
         or      eax, 1 << 16
         mov     cr0, eax
-%endmacro
+        ret
 
 
-%macro PAGING_BSS 0
+section .bss
 ; page table:
 ;       align to 4096, this allows us to use certain bits as flags ie
 ;       setting 0b11 sets present and writable flags
@@ -72,4 +60,3 @@ p3_table:               ; page directory pointer table  (PDP)
 p2_table:               ; page directory table          (PD)
         resb    4096
 ; there is a p1 table   ; Page table                    (PT)
-%endmacro

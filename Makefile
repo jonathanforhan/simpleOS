@@ -3,16 +3,18 @@
 # $^ = all dependencies
 
 BOOT_DIR = iso/boot
+ISO_NAME = simpleOS.iso
 
 all: kernel
 
 kernel:
 	make -C src/
 	cp src/kernel.elf $(BOOT_DIR)
-	grub-mkrescue -o simpleOS.iso iso/
+	grub-mkrescue -o $(ISO_NAME) iso/
 
-run: simpleOS.iso
-	qemu-system-x86_64 -cdrom simpleOS.iso -m 512
+run: $(ISO_NAME)
+	qemu-system-x86_64 -cdrom $(ISO_NAME) -m 512
 
 clean:
-	$(RM) src/**/*.o src/*.elf simpleOS.iso
+	$(RM) src/*.elf $(ISO_NAME)
+	find -iname \*.o | xargs $(RM) $1
