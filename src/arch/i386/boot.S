@@ -8,6 +8,8 @@ KERNEL_STACK_SIZE equ 4096
 section .text
 [bits 32]
 start:
+        cli
+
         lgdt    [gdt.pointer]
         mov     ax, gdt.data
         mov     ss, ax

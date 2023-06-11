@@ -41,8 +41,7 @@ paging_init:
 
 ;       finally enable paging
         mov     eax, cr0
-        or      eax, 1 << 31
-        or      eax, 1 << 16
+        or      eax, (1 << 31 | 1 << 16)
         mov     cr0, eax
         ret
 

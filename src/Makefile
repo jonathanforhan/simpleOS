@@ -5,7 +5,7 @@
 OBJ = ${shell find -name \*.[cS] -not -path "./arch/*" | sed -r 's/(.*).[cS]/\1.o/g'}
 HEADERS = ${shell find ../include -name \*.h}
 CC = gcc
-CFLAGS = -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
+CFLAGS = -std=c99 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		 -nostartfiles -nodefaultlibs -Wall -Wextra -c
 INCLUDE = -I../include/
 LDFLAGS = -n -o kernel.elf -T link.ld
