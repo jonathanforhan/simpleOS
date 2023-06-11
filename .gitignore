@@ -1,5 +1,7 @@
 *.elf
 *.o
+*.a
+*.so
 *.iso
 .cache
 *.json

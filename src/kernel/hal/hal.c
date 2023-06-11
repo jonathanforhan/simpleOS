@@ -1,5 +1,5 @@
-#include "hal.h"
-#include "idt.h"
+#include "hal/hal.h"
+#include "arch/i386/idt.h"
 
 void
 hal_init(void)

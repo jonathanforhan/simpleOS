@@ -1,4 +1,4 @@
-#include "idt.h"
+#include "arch/i386/idt.h"
 #include "util.h"
 
 static struct idt_entry idt[256];

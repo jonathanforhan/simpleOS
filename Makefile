@@ -20,3 +20,4 @@ run: $(ISO_NAME)
 
 clean:
 	$(RM) src/*.elf $(ISO_NAME)
+	find -type f -name \*.[ao] | xargs rm -f $1

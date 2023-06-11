@@ -1,5 +1,5 @@
 #pragma once
-#include "stdint.h"
+#include <stdint.h>
 
 /* https://wiki.osdev.org/Interrupt_Descriptor_Table */
 struct idt_entry {

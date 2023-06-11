@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "hal.h"
+#include "hal/hal.h"
 
 int
 kmain(void)
