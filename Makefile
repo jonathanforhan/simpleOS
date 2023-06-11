@@ -4,12 +4,15 @@
 
 BOOT_DIR = iso/boot
 ISO_NAME = simpleOS.iso
+BUILD = build
 
 all: kernel
 
 kernel:
-	make -C src/
-	cp src/kernel.elf $(BOOT_DIR)
+	@mkdir -p build/
+	@find src/ -type d -exec mkdir -p build/{} \;
+	@make -C src/
+	@cp $(BUILD)/kernel.elf $(BOOT_DIR)
 	grub-mkrescue -o $(ISO_NAME) iso/
 
 run: $(ISO_NAME)
@@ -17,4 +20,3 @@ run: $(ISO_NAME)
 
 clean:
 	$(RM) src/*.elf $(ISO_NAME)
-	find -iname \*.o | xargs $(RM) $1
