@@ -1,11 +1,7 @@
-# $@ = target file
-# $< = first dependency
-# $^ = all dependencies
-
-.PHONY: kernel lib 
+.PHONY: kernel lib
 
 kernel: lib
-	@make -C kernel/
+	@make -C kernel
 
 lib:
-	@make -C lib/
+	@make -C klib

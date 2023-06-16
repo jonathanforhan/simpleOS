@@ -1,7 +1,8 @@
 *.elf
 *.o
-*.a
 *.so
+*.a
 *.iso
 .cache
 *.json
+build
