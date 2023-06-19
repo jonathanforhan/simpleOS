@@ -1,15 +1,15 @@
 /*  kernel.c - the C part of the kernel */
 #include <kio.h>
-#include <kassert.h>
 #include <klib.h>
 #include <multiboot2.h>
 
-/*  Check if MAGIC is valid and print the Multiboot information structure
+/* Check if MAGIC is valid and print the Multiboot information structure
    pointed by ADDR. */
 void
 kmain (unsigned long magic, unsigned long addr) {
     cls();
-    printf("Hello, World");
+    printf("MAGIC_NUMBER: 0x%x\n", magic);
+    printf("INFO ADDR: 0x%x\n\n", addr);
 }
 
 /*  Copyright (C) 1999, 2010  Free Software Foundation, Inc.

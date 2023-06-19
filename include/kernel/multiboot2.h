@@ -1,30 +1,26 @@
 /* multiboot2.h - Multiboot 2 header file. */
 #pragma once
 
-/**
- * @file
- *
- * This multiboot2 header was taken from the GNU grub2 manual
- * source: https://www.gnu.org/software/grub/manual/multiboot2/multiboot.pdf
- */
+/* This multiboot2 header was taken from the GNU grub2 manual
+ * source: https://www.gnu.org/software/grub/manual/multiboot2/multiboot.pdf */
 
-/** How many bytes from the start of the file we search for the header */
+/* How many bytes from the start of the file we search for the header */
 #define MULTIBOOT_SEARCH                        32768
 #define MULTIBOOT_HEADER_ALIGN                  8
 
-/** Multiboot2 magic number for BIOS detection */
+/* Multiboot2 magic number for BIOS detection */
 #define MULTIBOOT2_HEADER_MAGIC                 0xe85250d6
 
-/** Magic number identifying a valid multiboot2 compliant bootloader */
+/* Magic number identifying a valid multiboot2 compliant bootloader */
 #define MULTIBOOT2_BOOTLOADER_MAGIC             0x36d76289
 
-/** Alignment of multiboot modules. */
+/* Alignment of multiboot modules. */
 #define MULTIBOOT_MOD_ALIGN                     0x00001000
 
-/** Alignment of the multiboot info structure. */
+/* Alignment of the multiboot info structure. */
 #define MULTIBOOT_INFO_ALIGN                    0x00000008
 
-/** Flags set in the 'flags' member of the multiboot header */
+/* Flags set in the 'flags' member of the multiboot header */
 
 #define MULTIBOOT_TAG_ALIGN                  8
 #define MULTIBOOT_TAG_TYPE_END               0
@@ -80,162 +76,151 @@ typedef unsigned short      multiboot_uint16_t;
 typedef unsigned int        multiboot_uint32_t;
 typedef unsigned long long  multiboot_uint64_t;
 
-/**
- * The layout of multiboot2 header must be as follows:
+/* The layout of multiboot2 header must be as follows:
  * |offset  |type   |field name     |note       |
  * |:-------|:------|:--------------|:----------|
  * |0       |u32    |magic          |required   |
  * |4       |u32    |architecture   |required   |
  * |8       |u32    |header_length  |required   |
  * |12      |u32    |checksum       |required   |
- * |16-XX   |       |tags           |required   |
- */
+ * |16-XX   |       |tags           |required   | */
 struct multiboot_header {
-    /**  Must be set to MULTIBOOT_MAGIC */
+    /*  Must be set to MULTIBOOT_MAGIC */
     multiboot_uint32_t magic;
 
-    /** ISA (instruction set architecture) must be i386 or MIPS */
+    /* ISA (instruction set architecture) must be i386 or MIPS */
     multiboot_uint32_t architecture;
 
-    /** Total multiboot header length */
+    /* Total multiboot header length */
     multiboot_uint32_t header_length;
 
-    /** The above fields plus this one must equal 0 mod 2^32 */
+    /* The above fields plus this one must equal 0 mod 2^32 */
     multiboot_uint32_t checksum;
 };
 
-/**
- * Tags constitutes a buffer of structures following each other padded when necessary in order
+/* Tags constitutes a buffer of structures following each other padded when necessary in order
  * for each tag to start at 8-bytes aligned address. Tags are terminated by a tag of type ‘0’
  * and size ‘8’. Every structure has following format:
  *
  * - u16 | type
  * - u16 | flags
- * - u32 | size
- */
+ * - u32 | size */
 struct multiboot_header_tag {
-    /** type if divided into 2 parts, the lower contains an identifier of contents of the rest
+    /* type if divided into 2 parts, the lower contains an identifier of contents of the rest
     of the tag */
     multiboot_uint16_t type;
 
-    /** if bit 0 of flags (aka 'optional') **is set** the bootloader my ignore this tag */
+    /* if bit 0 of flags (aka 'optional') **is set** the bootloader my ignore this tag */
     multiboot_uint16_t flags;
 
-    /** contains size of tag including header files */
+    /* contains size of tag including header files */
     multiboot_uint32_t size;
 };
 
-/**
- * If this tag is present and 'optional' is set to 0, the bootloader must support the
+/* If this tag is present and 'optional' is set to 0, the bootloader must support the
  * requested tag and be able to provide relevant information to the image if it is available. If
  * the bootloader does not understand the meaning of the requested tag it must fail with an
  * error. However, if it supports a given tag but the information conveyed by it is not available
  * the bootloader does not provide the requested tag in the Multiboot2 information structure
  * and passes control to the loaded image as usual */
 struct multiboot_header_tag_information_request {
-    /** type = 1 */
+    /* type = 1 */
     multiboot_uint16_t type;
     multiboot_uint16_t flags;
     multiboot_uint32_t size;
 
-    /** an array of u32's, each one representing an information request */
+    /* an array of u32's, each one representing an information request */
     multiboot_uint32_t requests[0];
 };
 
-/**
- * tag describing physical addresses of key segments, may be omitted if the kernel image
+/* tag describing physical addresses of key segments, may be omitted if the kernel image
  * is in ELF format */
 struct multiboot_header_tag_address {
-    /** type = 2 */
+    /* type = 2 */
     multiboot_uint16_t type;
     multiboot_uint16_t flags;
     multiboot_uint32_t size;
 
-    /**
-     * contains physical address of the beginning of the multiboot2 header, address
+    /* contains physical address of the beginning of the multiboot2 header, address
      * where the magic number is located */
     multiboot_uint32_t header_addr;
 
-    /** contains physical address of the beginning of text segment */
+    /* contains physical address of the beginning of text segment */
     multiboot_uint32_t load_addr;
 
-    /** contains physical address of the end of data segment */
+    /* contains physical address of the end of data segment */
     multiboot_uint32_t load_end_addr;
 
-    /** contains physical address of the end of the bss segment */
+    /* contains physical address of the end of the bss segment */
     multiboot_uint32_t bss_end_addr;
 };
 
 struct multiboot_header_tag_entry_address {
-    /** type = 3 / 8 / 9  (ISA and EFI dependant see gnu source) */
+    /* type = 3 / 8 / 9  (ISA and EFI dependant see gnu source) */
     multiboot_uint16_t type;
     multiboot_uint16_t flags;
     multiboot_uint32_t size;
 
-    /** physical address to jump to start the OS */
+    /* physical address to jump to start the OS */
     multiboot_uint32_t entry_addr;
 };
 
-/**
- * If this tag is present and bit 0 of 'console_flags' is set at least one of supported
+/* If this tag is present and bit 0 of 'console_flags' is set at least one of supported
  * consoles must be present and information about it must be available in mbi. If bit 1 of
  * 'console_flags' is set it indicates that the OS image has EGA text support */
 struct multiboot_header_tag_console_flags {
-    /** type = 4 */
+    /* type = 4 */
     multiboot_uint16_t type;
     multiboot_uint16_t flags;
     multiboot_uint32_t size;
     multiboot_uint32_t console_flags;
 };
 
-/**
- * this tag specifies the preferred graphic mode. If this tag is present bootloader 
+/* this tag specifies the preferred graphic mode. If this tag is present bootloader 
  * assumes that the payload has framebuffer support */
 struct multiboot_header_tag_framebuffer {
-    /** type = 5 */
+    /* type = 5 */
     multiboot_uint16_t type;
     multiboot_uint16_t flags;
     multiboot_uint32_t size;
 
-    /** 
-     * contains the number of columns, this is specified in pixels in graphics mode
+    /* contains the number of columns, this is specified in pixels in graphics mode
      * and characters in text mode, 0 indicates no preference */
     multiboot_uint32_t width;
 
-    /** 
-     * contains the number of columns, this is specified in pixels in graphics mode
+    /* contains the number of columns, this is specified in pixels in graphics mode
      * and characters in text mode, 0 indicates no preference */
     multiboot_uint32_t height;
 
-    /** contains the number of bits per pixel in a graphics mode and zero in text mode */
+    /* contains the number of bits per pixel in a graphics mode and zero in text mode */
     multiboot_uint32_t depth;
 };
 
-/** if this tag is present modules must be page aligned */
+/* if this tag is present modules must be page aligned */
 struct multiboot_header_tag_module_align {
-    /** type = 6 */
+    /* type = 6 */
     multiboot_uint16_t type;
     multiboot_uint16_t flags;
     multiboot_uint32_t size;
 };
 
-/** this tag indicates that the image is relocatable */
+/* this tag indicates that the image is relocatable */
 struct multiboot_header_tag_relocatable {
-    /** type = 10 */
+    /* type = 10 */
     multiboot_uint16_t type;
     multiboot_uint16_t flags;
     multiboot_uint32_t size;
 
-    /** lowest possible memory address at which image should be loaded */
+    /* lowest possible memory address at which image should be loaded */
     multiboot_uint32_t min_addr;
 
-    /** highest possible memory address at which image should be loaded */
+    /* highest possible memory address at which image should be loaded */
     multiboot_uint32_t max_addr;
 
-    /** image alignment e.g. 4096 */
+    /* image alignment e.g. 4096 */
     multiboot_uint32_t align;
 
-    /** It contains load address placement suggestion for boot loader. Boot loader
+    /* It contains load address placement suggestion for boot loader. Boot loader
      * should follow it. 0 means none, 1 means load image at lowest possible address
      * but not lower than min addr and 2 means load image at highest possible
      * address but not higher than max addr */
