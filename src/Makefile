@@ -1,7 +1,4 @@
-.PHONY: kernel lib
+.PHONY: all
 
-kernel: lib
+kernel: all
 	@make -C kernel
-
-lib:
-	@make -C klib

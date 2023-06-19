@@ -7,7 +7,7 @@ all: kernel
 kernel:
 	@mkdir -p $(BUILD)/
 	@cd src/ && find -type d -exec mkdir -p ../$(BUILD)/{} \;
-	@bear -- make -C src/ || make -C src/
+	@bear -- make -C src
 	@cp $(BUILD)/kernel/kernel.elf $(BOOT_DIR)
 	@grub-mkrescue -o $(ISO_NAME) iso/
 

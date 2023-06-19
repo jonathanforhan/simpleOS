@@ -1,4 +1,4 @@
-/* kbool.h - kernel implementation of stdbool */
+/* kbool.h - kernel bools */
 #pragma once
 
 #define bool _Bool

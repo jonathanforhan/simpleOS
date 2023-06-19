@@ -81,16 +81,8 @@ multiboot_entry:
 
         /*  Now enter the C main function... */
         call    EXT_C(kmain)
-
-        /*  Halt. */
-        pushl   $halt_message
-        call    EXT_C(printf)
-
 loop:   hlt
         jmp     loop
-
-halt_message:
-        .asciz  "Halted."
 
         /*  Our stack area. */
         .comm   stack, STACK_SIZE

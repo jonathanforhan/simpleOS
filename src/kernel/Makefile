@@ -3,14 +3,13 @@ BUILD = $(PROJECT_ROOT)/build/kernel
 
 OBJ = ${shell find -name \*.[cS] -not -path "./arch/*" | sed -r 's/$$/.o/' | cut -c 3-}
 HEADERS = ${shell find $(PROJECT_ROOT)/include/kernel/ -name \*.h}
-INCLUDE = -I$(PROJECT_ROOT)/include/ -I$(PROJECT_ROOT)/include/kernel -I$(PROJECT_ROOT)/include/klib
-LIB = -L$(PROJECT_ROOT)/lib -llibk
+INCLUDE = -I$(PROJECT_ROOT)/include/ -I$(PROJECT_ROOT)/include/kernel -I$(PROJECT_ROOT)/include/kernel/klib
 
 CC = gcc
 CFLAGS = -std=c99 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		 -nostartfiles -nodefaultlibs -Wall -Wextra -c
 AS = gcc -c
-LDFLAGS = -n -o kernel.elf -T link.ld
+LDFLAGS = -n -T link.ld
 
 ifeq ($(target), i386)
 OBJ += ${shell find arch/i386 -name \*.[cS] | sed -r 's/$$/.o/'}
@@ -31,7 +30,7 @@ OBJ_FULL_PATH = $(patsubst %, $(BUILD)/%, $(OBJ))
 all: kernel.elf
 
 kernel.elf: $(OBJ_FULL_PATH) $(HEADERS)
-	@ld $(LDFLAGS) $(LIB) $(OBJ_FULL_PATH) -o $(BUILD)/kernel.elf
+	@ld $(LDFLAGS) $(OBJ_FULL_PATH) -o $(BUILD)/kernel.elf
 	@echo 'linking $(OBJ)'
 
 $(BUILD)/%.c.o: %.c
